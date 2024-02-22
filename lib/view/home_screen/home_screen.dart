@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:note_application/controller/home_screen_controller.dart';
 import 'package:note_application/view/home_screen/widgets/custom_widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  HomeScreenController homeScreenController = HomeScreenController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Icon(Icons.add),
         onPressed: () {
           showModalBottomSheet(
-            scrollControlDisabledMaxHeightRatio: .6,
             context: context,
             builder: (context) => Container(
               decoration: BoxDecoration(
@@ -107,12 +109,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 40,
                           ),
                           Expanded(
-                            child: Container(
-                              height: 30,
-                              child: Center(child: Text("Save")),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
+                            child: InkWell(
+                              onTap: () {
+                                homeScreenController.addData();
+                                setState(() {});
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                height: 30,
+                                child: Center(child: Text("Save")),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           )
@@ -136,11 +145,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: ListView.separated(
-          itemBuilder: (context, index) => CustomWidgets(),
+          itemBuilder: (context, index) => CustomWidgets(
+                title: homeScreenController.noteList[index]["title"],
+                des: homeScreenController.noteList[index]["des"],
+                date: homeScreenController.noteList[index]["date"],
+                noteColor: homeScreenController.noteList[index]["color"],
+                deleteButton: () {
+                  homeScreenController.deleteData(index);
+                  setState(() {});
+                },
+              ),
           separatorBuilder: (context, index) => SizedBox(
                 height: 10,
               ),
-          itemCount: 2),
+          itemCount: homeScreenController.noteList.length),
     );
   }
 }

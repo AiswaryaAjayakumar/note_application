@@ -1,24 +1,30 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:note_application/controller/home_screen_controller.dart';
 
-class CustomWidgets extends StatefulWidget {
-  const CustomWidgets({super.key});
+class CustomWidgets extends StatelessWidget {
+  const CustomWidgets(
+      {super.key,
+      required this.title,
+      required this.des,
+      required this.date,
+      required this.noteColor,
+      this.deleteButton});
 
-  @override
-  State<CustomWidgets> createState() => _CustomWidgetsState();
-}
+  final String title;
+  final String des;
+  final String date;
+  final Color noteColor;
+  final void Function()? deleteButton;
 
-class _CustomWidgetsState extends State<CustomWidgets> {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
-        height: 150,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: const Color.fromARGB(255, 243, 240, 209)),
+            borderRadius: BorderRadius.circular(20), color: noteColor),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -27,7 +33,7 @@ class _CustomWidgetsState extends State<CustomWidgets> {
               Row(
                 children: [
                   Text(
-                    "Title",
+                    title,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   Spacer(),
@@ -35,17 +41,20 @@ class _CustomWidgetsState extends State<CustomWidgets> {
                   SizedBox(
                     width: 20,
                   ),
-                  Icon(Icons.delete)
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: deleteButton,
+                  )
                 ],
               ),
               SizedBox(
                 height: 10,
               ),
-              Text("Ahghgjfhf"),
+              Text(des),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Tue, Feb 20, 2024"),
+                  Text(date),
                   SizedBox(
                     width: 15,
                   ),
