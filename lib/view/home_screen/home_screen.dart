@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
 import 'package:note_application/controller/home_screen_controller.dart';
@@ -33,6 +33,19 @@ class _HomeScreenState extends State<HomeScreen> {
     Color.fromARGB(255, 231, 224, 165)
   ];
 
+  static Color selectedColor = Colors.white;
+
+  var formKey = GlobalKey<FormState>();
+
+  void editData(int index) {
+    homeScreenController.noteList[index] = {
+      "title": titleController.text,
+      "des": desController.text,
+      "daste": dateController.text,
+      "color": selectedColor
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,138 +69,165 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextFormField(
-                              controller: titleController,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor:
-                                    const Color.fromARGB(255, 174, 172, 172),
-                                label: Text("Title"),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                //fillColor: Colors.white
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              controller: desController,
-                              maxLines: 2,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor:
-                                    const Color.fromARGB(255, 174, 172, 172),
-                                label: Text("Description"),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              controller: dateController,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor:
-                                    const Color.fromARGB(255, 174, 172, 172),
-                                label: Text("Date"),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              height: 50,
-                              child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                itemCount: 4,
-                                itemBuilder: (context, index) => InkWell(
-                                  onTap: () {
-                                    HomeScreenController colorObj =
-                                        HomeScreenController();
-                                    selectedIndex = index;
-                                    colorObj.colorSelection(
-                                        customColorList[selectedIndex]);
-                                    bottomSetState(() {});
-                                  },
-                                  child: Container(
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                      border: selectedIndex == index
-                                          ? Border.all(color: Colors.red)
-                                          : null,
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: customColorList[index],
-                                    ),
-                                  ),
-                                ),
-                                separatorBuilder: (context, index) => SizedBox(
-                                  width: 10,
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextFormField(
+                                validator: (value) {
+                                  if (titleController.text.isNotEmpty) {
+                                    return null;
+                                  } else {
+                                    return "Enter a Valid date";
+                                  }
+                                },
+                                controller: titleController,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor:
+                                      const Color.fromARGB(255, 174, 172, 172),
+                                  label: Text("Title"),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  //fillColor: Colors.white
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        clearController();
-                                        Navigator.pop(context);
-                                      },
-                                      child: Container(
-                                        height: 30,
-                                        child: Center(child: Text("Cancel")),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Colors.white,
-                                        ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextFormField(
+                                validator: (value) {
+                                  if (desController.text.isNotEmpty) {
+                                    return null;
+                                  } else {
+                                    return "Enter a Valid date";
+                                  }
+                                },
+                                controller: desController,
+                                maxLines: 2,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor:
+                                      const Color.fromARGB(255, 174, 172, 172),
+                                  label: Text("Description"),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextFormField(
+                                validator: (value) {
+                                  if (dateController.text.isNotEmpty) {
+                                    return null;
+                                  } else {
+                                    return "Enter a Valid date";
+                                  }
+                                },
+                                controller: dateController,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor:
+                                      const Color.fromARGB(255, 174, 172, 172),
+                                  label: Text("Date"),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                height: 50,
+                                child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: 4,
+                                  itemBuilder: (context, index) => InkWell(
+                                    onTap: () {
+                                      selectedIndex = index;
+                                      selectedColor =
+                                          customColorList[selectedIndex];
+                                      bottomSetState(() {});
+                                    },
+                                    child: Container(
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: customColorList[index],
+                                        border: selectedIndex == index
+                                            ? Border.all(color: Colors.red)
+                                            : null,
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 40,
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                    width: 10,
                                   ),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        homeScreenController.addData(
-                                            title: titleController.text,
-                                            des: desController.text,
-                                            date: dateController.text);
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          clearController();
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          child: Center(child: Text("Cancel")),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 40,
+                                    ),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            homeScreenController.addData(
+                                                titleController.text,
+                                                desController.text,
+                                                dateController.text,
+                                                selectedColor);
 
-                                        setState(() {});
-                                        clearController();
-                                        Navigator.pop(context);
-                                      },
-                                      child: Container(
-                                        height: 30,
-                                        child: Center(child: Text("Save")),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Colors.white,
+                                            setState(() {});
+                                            clearController();
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          child: Center(child: Text("Save")),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -205,21 +245,240 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: ListView.separated(
-          itemBuilder: (context, index) => CustomWidgets(
-                title: homeScreenController.noteList[index]["title"],
-                des: homeScreenController.noteList[index]["des"],
-                date: homeScreenController.noteList[index]["date"],
-                noteColor: homeScreenController.noteList[index]["color"],
-                deleteButton: () {
-                  homeScreenController.deleteData(index);
-                  setState(() {});
-                },
+      body: homeScreenController.noteList.isEmpty
+          ? Center(
+              child: Text(
+              "No data found",
+              style: TextStyle(
+                color: Colors.white,
               ),
-          separatorBuilder: (context, index) => SizedBox(
-                height: 10,
-              ),
-          itemCount: homeScreenController.noteList.length),
+            ))
+          : ListView.separated(
+              shrinkWrap: true,
+              reverse: true,
+              itemBuilder: (context, index) => CustomWidgets(
+                    title: homeScreenController.noteList[index]["title"],
+                    des: homeScreenController.noteList[index]["des"],
+                    date: homeScreenController.noteList[index]["date"],
+                    noteColor: homeScreenController.noteList[index]["color"],
+                    deleteButton: () {
+                      homeScreenController.deleteData(index);
+                      setState(() {});
+                    },
+                    editButton: () {
+                      titleController.text =
+                          homeScreenController.noteList[index]["title"];
+                      desController.text =
+                          homeScreenController.noteList[index]["des"];
+                      dateController.text =
+                          homeScreenController.noteList[index]["date"];
+                      selectedColor;
+
+                      showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (context) {
+                            return StatefulBuilder(
+                              builder: (context, bottomSetState) => Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(28)),
+                                    color: Color.fromARGB(255, 80, 79, 79),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Form(
+                                      key: formKey,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextFormField(
+                                            validator: (value) {
+                                              if (titleController
+                                                  .text.isNotEmpty) {
+                                                return null;
+                                              } else {
+                                                return "Enter a Valid date";
+                                              }
+                                            },
+                                            controller: titleController,
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: const Color.fromARGB(
+                                                  255, 174, 172, 172),
+                                              label: Text("Title"),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              //fillColor: Colors.white
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          TextFormField(
+                                            validator: (value) {
+                                              if (desController
+                                                  .text.isNotEmpty) {
+                                                return null;
+                                              } else {
+                                                return "Enter a Valid date";
+                                              }
+                                            },
+                                            controller: desController,
+                                            maxLines: 2,
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: const Color.fromARGB(
+                                                  255, 174, 172, 172),
+                                              label: Text("Description"),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          TextFormField(
+                                            validator: (value) {
+                                              if (dateController
+                                                  .text.isNotEmpty) {
+                                                return null;
+                                              } else {
+                                                return "Enter a valid date";
+                                              }
+                                            },
+                                            controller: dateController,
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: const Color.fromARGB(
+                                                  255, 174, 172, 172),
+                                              label: Text("Date"),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          SizedBox(
+                                            height: 50,
+                                            child: ListView.separated(
+                                              scrollDirection: Axis.horizontal,
+                                              shrinkWrap: true,
+                                              itemCount: 4,
+                                              itemBuilder: (context, index) =>
+                                                  InkWell(
+                                                onTap: () {
+                                                  selectedIndex = index;
+                                                  selectedColor =
+                                                      customColorList[
+                                                          selectedIndex];
+                                                  bottomSetState(() {});
+                                                },
+                                                child: Container(
+                                                  width: 60,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        customColorList[index],
+                                                    border: selectedIndex ==
+                                                            index
+                                                        ? Border.all(
+                                                            color: Colors.red)
+                                                        : null,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                ),
+                                              ),
+                                              separatorBuilder:
+                                                  (context, index) => SizedBox(
+                                                width: 10,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Center(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      clearController();
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Container(
+                                                      height: 30,
+                                                      child: Center(
+                                                          child:
+                                                              Text("Cancel")),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 40,
+                                                ),
+                                                Expanded(
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      editData(index);
+
+                                                      setState(() {});
+                                                      clearController();
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Container(
+                                                      height: 30,
+                                                      child: Center(
+                                                          child:
+                                                              Text("Update")),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          });
+                    },
+                  ),
+              separatorBuilder: (context, index) => SizedBox(
+                    height: 10,
+                  ),
+              itemCount: homeScreenController.noteList.length),
     );
   }
 }
