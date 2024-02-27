@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:note_application/controller/home_screen_controller.dart';
 import 'package:note_application/view/home_screen/widgets/custom_widgets.dart';
 
@@ -41,8 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
     homeScreenController.noteList[index] = {
       "title": titleController.text,
       "des": desController.text,
-      "daste": dateController.text,
-      "color": selectedColor
+      "date": dateController.text,
+      "color": selectedColor,
     };
   }
 
@@ -119,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 20,
                               ),
                               TextFormField(
+                                readOnly: true,
                                 validator: (value) {
                                   if (dateController.text.isNotEmpty) {
                                     return null;
@@ -128,6 +130,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 controller: dateController,
                                 decoration: InputDecoration(
+                                  suffixIcon: InkWell(
+                                      onTap: () async {
+                                        final DateTime? selectedDate =
+                                            await showDatePicker(
+                                                context: context,
+                                                firstDate: DateTime(2000),
+                                                lastDate: DateTime(2025));
+                                        if (selectedDate != null) {
+                                          String formatedDate =
+                                              DateFormat("dd/MM/yyyy")
+                                                  .format(selectedDate);
+
+                                          dateController.text = formatedDate;
+                                        }
+                                      },
+                                      child: Icon(Icons.calendar_month)),
                                   filled: true,
                                   fillColor:
                                       const Color.fromARGB(255, 174, 172, 172),
@@ -268,11 +286,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     editButton: () {
                       titleController.text =
                           homeScreenController.noteList[index]["title"];
+
                       desController.text =
                           homeScreenController.noteList[index]["des"];
+
                       dateController.text =
                           homeScreenController.noteList[index]["date"];
-                      selectedColor;
 
                       showModalBottomSheet(
                           isScrollControlled: true,
@@ -372,7 +391,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             height: 20,
                                           ),
                                           SizedBox(
-                                            height: 50,
+                                            height: 60,
                                             child: ListView.separated(
                                               scrollDirection: Axis.horizontal,
                                               shrinkWrap: true,
@@ -387,7 +406,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   bottomSetState(() {});
                                                 },
                                                 child: Container(
-                                                  width: 60,
+                                                  width: selectedIndex == index
+                                                      ? 90
+                                                      : 60,
                                                   decoration: BoxDecoration(
                                                     color:
                                                         customColorList[index],
@@ -443,6 +464,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   child: InkWell(
                                                     onTap: () {
                                                       editData(index);
+                                                      // bottomSetState(
+                                                      //   () {},
+                                                      // );
 
                                                       setState(() {});
                                                       clearController();
