@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:note_application/view/home_screen/home_screen.dart';
+
 
 import 'package:note_application/view/splash_screen/splash_screen.dart';
 

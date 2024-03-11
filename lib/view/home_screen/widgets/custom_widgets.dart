@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:note_application/controller/home_screen_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CustomWidgets extends StatefulWidget {
@@ -35,7 +34,7 @@ class _CustomWidgetsState extends State<CustomWidgets> {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: Colors.white),
+            borderRadius: BorderRadius.circular(20), color: widget.noteColor),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
