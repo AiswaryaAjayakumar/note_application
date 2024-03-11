@@ -7,10 +7,10 @@ class HomeScreenController {
   static TextEditingController dateController = TextEditingController();
 
   static List customColorList = [
-    const Color.fromARGB(255, 240, 197, 212),
-    const Color.fromARGB(255, 153, 176, 196),
-    const Color.fromARGB(255, 193, 237, 194),
-    const Color.fromARGB(255, 238, 150, 150)
+    const Color.fromARGB(255, 249, 131, 170),
+    const Color.fromARGB(255, 83, 167, 235),
+    const Color.fromARGB(255, 161, 242, 164),
+    const Color.fromARGB(255, 241, 123, 115),
   ];
 
   // Color selectedColor = Colors.white;

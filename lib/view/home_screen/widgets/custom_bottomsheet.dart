@@ -121,7 +121,6 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                             bottomSetState(
                               () {},
                             );
-                           
                           },
                           child: Container(
                             height: 60,
@@ -157,7 +156,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                             child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: ColorConstants.customColorPurple,
+                                  color: ColorConstants.customColorTeal,
                                 ),
                                 padding: EdgeInsets.all(15),
                                 child: Center(child: Text("Cancel"))),
@@ -176,7 +175,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                             child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: ColorConstants.customColorPurple,
+                                  color: ColorConstants.customColorTeal,
                                 ),
                                 padding: EdgeInsets.all(15),
                                 child: Center(
